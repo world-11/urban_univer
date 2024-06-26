@@ -8,3 +8,4 @@ class House:
 
 h1 = House(0)
 h1.setNewNumberOfFloors(9)
+print(type(h1))
