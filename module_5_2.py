@@ -3,8 +3,8 @@ class House:
         self.numberOfFloors = 0
 
     def setNewNumberOfFloors(self, floors):
-        House.numberOfFloors = floors
-        print(House.numberOfFloors)
+        self.numberOfFloors = floors
+        print(self.numberOfFloors)
 
 h1 = House(0)
 h1.setNewNumberOfFloors(9)
