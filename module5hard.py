@@ -20,9 +20,9 @@ class UrTube():
         self.current_user: User = None
 
     def log_in(self, nickname: str, password: str):
-        for x in self.users:
-            if nickname == x.nickname and password == x.password:
-                self.current_user = x
+        for user in self.users:
+            if nickname == user.nickname and password == user.password:
+                self.current_user = user
             else:
                 print('Пользователь с таким именем/паролем не зарегистрирован')
                 break
@@ -31,10 +31,10 @@ class UrTube():
         self.current_user = None
 
     def register(self, nickname: str, password: str, age: int):
-        y = User(nickname = nickname, password = password, age = age)
+        user_r = User(nickname = nickname, password = password, age = age)
         f = False #наличие юзера в списке
-        for x in self.users:
-            if y.nickname == x.nickname:
+        for user in self.users:
+            if y.nickname == user.nickname:
                 f = True
                 break
         if f == True:
@@ -66,7 +66,7 @@ class UrTube():
         if self.current_user != None:
             for x in self.videos:
                 x1 = x.title
-                if x.adult_mode == True and self.current_user.age < 18:
+                if x.adult_mode and self.current_user.age < 18:
                     print('Вам нет 18 лет, пожалуйста покиньте страницу')
                 else:
                     if video_title == x1:
