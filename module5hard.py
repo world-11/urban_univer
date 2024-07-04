@@ -63,18 +63,11 @@ class UrTube():
             f = True and print("Такого видео нет")
         return result
 
-    def handler(signum, frame):
-        print('Signal handler called with signal', signum)
-        exit()
-
     def watch_video(self, video_title: str):
         f = True
         if self.current_user != None:
-            # if s in self.videos:
-            #     print('Такого видео нет')
-            #     return
             for y in self.videos:
-                if y.adult_mode == True and self.current_user.age < 18:
+                if y.adult_mode and self.current_user.age < 18:
                     print('Вам нет 18 лет, пожалуйста покиньте страницу')
                     return
                 else:
