@@ -19,10 +19,14 @@ class UrTube():
         self.current_user: User = None
 
     def log_in(self, nickname: str, password: str):
-            if (nickname, hash(password)) in self.users:
-                self.current_user = self.users(nickname = nickname, password = hash(password))
-            else:
-                print('Пользователь с таким именем/паролем не зарегистрирован')
+        if self.current_user != None:
+            for y in self.users:
+                if y.nickname == nickname and y.password == hash(password):
+                    self.current_user = y
+                    break
+                else:
+                    print('Пользователь с таким именем/паролем не зарегистрирован')
+                    break
 
     def log_out(self):
         self.current_user = None
@@ -31,7 +35,7 @@ class UrTube():
         y = User(nickname = nickname, password = password, age = age)
         f = False #наличие юзера в списке
         for x in self.users:
-            if y.nickname == x.nickname:
+            if x.nickname == y.nickname:
                 f = True
                 break
         if f == True:
@@ -64,14 +68,19 @@ class UrTube():
         exit()
 
     def watch_video(self, video_title: str):
+        f = True
         if self.current_user != None:
-            for x in self.videos:
-                x1 = x.title
-                if x.adult_mode == True and self.current_user.age < 18:
+            # if s in self.videos:
+            #     print('Такого видео нет')
+            #     return
+            for y in self.videos:
+                if y.adult_mode == True and self.current_user.age < 18:
                     print('Вам нет 18 лет, пожалуйста покиньте страницу')
+                    return
                 else:
-                    if video_title == x1:
-                        for i in range(x.duration):
+                    if video_title == y.title:
+                        f = False
+                        for i in range(y.duration):
                             print (i, end="")
                             time.sleep(1)
                             print( end='\r')
@@ -80,6 +89,10 @@ class UrTube():
                         break
         else:
             print('Войдите в аккаунт, чтобы смотреть видео')
+            return
+        if f == True:
+            print('Такого видео нет')
+
 
 ur = UrTube()
 v1 = Video('Лучший язык программирования 2024 года', 200)
