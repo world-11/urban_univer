@@ -1,4 +1,4 @@
-import time, os
+import time
 
 class User:
     def __init__(self, nickname: str, password: str, age: int):
@@ -10,7 +10,6 @@ class Video:
     def __init__(self, title: str, duration: time = 0, time_now: time = 0, adult_mode: bool = False):
         self.title = title
         self.duration = duration
-        self.time_now = time_now
         self.adult_mode = adult_mode
 
 class UrTube():
@@ -20,21 +19,19 @@ class UrTube():
         self.current_user: User = None
 
     def log_in(self, nickname: str, password: str):
-        for user in self.users:
-            if nickname == user.nickname and password == user.password:
-                self.current_user = user
+            if (nickname, hash(password)) in self.users:
+                self.current_user = self.users(nickname = nickname, password = hash(password))
             else:
                 print('Пользователь с таким именем/паролем не зарегистрирован')
-                break
 
     def log_out(self):
         self.current_user = None
 
     def register(self, nickname: str, password: str, age: int):
-        user_r = User(nickname = nickname, password = password, age = age)
+        y = User(nickname = nickname, password = password, age = age)
         f = False #наличие юзера в списке
-        for user in self.users:
-            if y.nickname == user.nickname:
+        for x in self.users:
+            if y.nickname == x.nickname:
                 f = True
                 break
         if f == True:
@@ -62,17 +59,23 @@ class UrTube():
             f = True and print("Такого видео нет")
         return result
 
+    def handler(signum, frame):
+        print('Signal handler called with signal', signum)
+        exit()
+
     def watch_video(self, video_title: str):
         if self.current_user != None:
             for x in self.videos:
                 x1 = x.title
-                if x.adult_mode and self.current_user.age < 18:
+                if x.adult_mode == True and self.current_user.age < 18:
                     print('Вам нет 18 лет, пожалуйста покиньте страницу')
                 else:
                     if video_title == x1:
                         for i in range(x.duration):
-                            print(i+1, end=' ')
+                            print (i, end="")
                             time.sleep(1)
+                            print( end='\r')
+                        print("\r", end="")
                         print("Конец видео")
                         break
         else:
