@@ -7,7 +7,7 @@ class User:
         self.age = age
 
 class Video:
-    def __init__(self, title: str, duration: time = 0, time_now: time = 0, adult_mode: bool = False):
+    def __init__(self, title: str, duration: int = 0, time_now: int = 0, adult_mode: bool = False):
         self.title = title
         self.duration = duration
         self.adult_mode = adult_mode
@@ -16,83 +16,85 @@ class UrTube():
     def __init__(self):
         self.users = []
         self.videos = []
-        self.current_user: User = None
+        self.current_user: []
 
+
+
+    # какое критическое количество итераций должно быть
     def log_in(self, nickname: str, password: str):
-        if self.current_user != None:
-            for y in self.users:
-                if y.nickname == nickname and y.password == hash(password):
-                    self.current_user = y
+            for user_search in self.users:
+                if user_search.nickname == nickname and user_search.password == hash(password):
+                    self.current_user = user_search
                     break
                 else:
                     print('Пользователь с таким именем/паролем не зарегистрирован')
                     break
 
     def log_out(self):
-        self.current_user = None
+        self.current_user = []  #как заменить данную строрку?
 
     def register(self, nickname: str, password: str, age: int):
-        y = User(nickname = nickname, password = password, age = age)
+        new_user = User(nickname = nickname, password = password, age = age)
         f = False #наличие юзера в списке
         for x in self.users:
-            if x.nickname == y.nickname:
-                f = True
-                break
-        if f == True:
-            return print(f'Пользователь {nickname} уже существует')
-        else:
-            self.users.append(y)
-            self.current_user = y
+            if x.nickname == new_user.nickname:
+                return print(f'Пользователь {nickname} уже существует')
+        self.users.append(new_user)
+        self.current_user = new_user
 
-    def add(self, *args: Video):
+    def add(self, *args):
         for x in args:
-            if x.title in self.videos:
-                print('Видео с таким названием уже есть')
+            if self.videos != []:
+                for v in self.videos:
+                    if x.title == v.title:
+                        return print(f'Видео {x.title} уже существует')
+                    else:
+                        self.videos.append(x)
             else:
                 self.videos.append(x)
 
-    def get_videos(self, sw: str):
+    def get_videos(self, need_video: str):
         result = []
-        n_sw = sw.lower()
-        f = False
         for x in self.videos:
-            x1 = x.title.lower()
-            if n_sw in x1:
+            if need_video.lower() in x.title.lower():
                 result.append(x.title)
         if result == []:
-            f = True and print("Такого видео нет")
+            print("Видео с таким названием нет")
         return result
 
     def watch_video(self, video_title: str):
-        f = True
-        if self.current_user != None:
-            for y in self.videos:
-                if y.adult_mode and self.current_user.age < 18:
+        f = True #отсутствие видео в списке
+        if self.current_user != []:
+            for video_ in self.videos:
+                if video_.adult_mode and self.current_user.age < 18:
                     print('Вам нет 18 лет, пожалуйста покиньте страницу')
                     return
                 else:
-                    if video_title == y.title:
+                    if video_title == video_.title:
                         f = False
-                        for i in range(y.duration):
+                        for i in range(video_.duration):
                             print (i, end="")
+                            self.time_now = i
                             time.sleep(1)
                             print( end='\r')
                         print("\r", end="")
                         print("Конец видео")
+                        self.time_now = 0
                         break
         else:
             print('Войдите в аккаунт, чтобы смотреть видео')
             return
-        if f == True:
+        if f == True: #отсутсвие видео
             print('Такого видео нет')
 
 
 ur = UrTube()
 v1 = Video('Лучший язык программирования 2024 года', 200)
 v2 = Video('Для чего девушкам парень программист?', 10, adult_mode=True)
+v3 = Video('Лучший язык программирования 2024 года', 200)#
 
 # Добавление видео
-ur.add(v1, v2)
+ur.add(v1, v2, v3)# не проверяет
 
 # Проверка поиска
 print(ur.get_videos('лучший'))
@@ -114,6 +116,9 @@ print(ur.current_user.nickname)
 
 ur.register('Nikolay', 'qwerty', 35)
 print(ur.current_user.nickname)
+
+# Попытка воспроизведения несуществующего видео
+ur.watch_video('Лучший язык программирования 2024 года!')
 
 # Попытка воспроизведения несуществующего видео
 ur.watch_video('Лучший язык программирования 2024 года!')
