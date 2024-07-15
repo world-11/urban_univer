@@ -23,7 +23,7 @@ class Shop:
         for i in products:
             if i.name not in self.get_products():
                 file = open(self.__file_name, 'a')
-                file.write(f'\n{i.name}, {i.weight}, {i.category}')
+                file.write(f'{i.name}, {i.weight}, {i.category}\n')
                 file.close()
             else:
                 print(f'Продукт {i.name} уже есть в магазине')
