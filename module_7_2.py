@@ -1,5 +1,3 @@
-from pprint import pprint
-
 def custom_write(file_name, strings: list):
     strings_positions = {}
     ind = 0
