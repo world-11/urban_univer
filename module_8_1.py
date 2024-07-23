@@ -1,7 +1,4 @@
 def add_everything_up(a, b):
-    def __init__(self, a, b):
-        self.a = a
-        self.b = b
 
     try:
         return round((a + b), 3)
