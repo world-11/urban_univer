@@ -1,9 +1,8 @@
-import threading
 from random import randint
 from  time import sleep
 from threading import Thread, Lock
 
-lock1 = threading.Lock()
+lock1 = Lock()
 
 class Bank:
     def __init__(self, balance: int == 0, lock: Lock == lock1):
