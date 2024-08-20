@@ -8,14 +8,16 @@ class Guest(threading.Thread):
         super().__init__()
         self.name = name
 
+    def run(self):
+        time_ = randint(3, 10)
+        sleep(time_)
+
 class Table():
     def __init__(self, number: int, guest: Guest = None):
         self.number = number
         self.guest = None
 
-    def run(self):
-        time_ = randint(3, 10)
-        sleep(time_)
+
 
 class Cafe():
     def __init__(self, *tables: Table):
