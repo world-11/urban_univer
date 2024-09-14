@@ -13,8 +13,7 @@ def introspection_info(obj):
     info['версия os'] = sys.platform
     info['interpretator'] = sys.executable
     info['path поиска модуля'] = sys.path
-    for key in info:
-        print(f'{key}: {info[key]}')
+    return info
 
 
 # импровизированный тип данных
@@ -53,4 +52,5 @@ class sport(object):
 
 boy = sport(12321, 'Ivanov', 15, )
 a = introspection_info(boy)
-
+for key in a:
+        print(f'{key}: {a[key]}')
