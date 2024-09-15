@@ -6,8 +6,8 @@ def introspection_info(obj):
     info = {}
     info['тип обьекта'] = type(obj)
     info['описание класса'] = inspect.getcomments(obj)
-    info['атрибуты'] = [attr for attr in dir(obj) if not attr.startswith('__')]
-    info['встроенные атрибуты'] = [attr for attr in dir(obj) if attr.startswith('__')]
+    info['атрибуты'] = inspect.getmembers(obj, lambda attr: not (inspect.isroutine(attr)))
+    info['методы'] = inspect.getmembers(obj, inspect.isroutine)
     info['функции'] = inspect.getmembers(obj, inspect.isfunction)
     info['модуль'] = inspect.getmodule(obj)
     info['версия python'] = sys.version
@@ -52,6 +52,6 @@ class sport(object):
         return cup_
 
 boy = sport(12321, 'Ivanov', 15, )
-a = introspection_info(32)
+a = introspection_info(boy)
 for key in a:
         print(f'{key}: {a[key]}')
