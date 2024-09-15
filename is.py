@@ -5,10 +5,11 @@ def introspection_info(obj):
     # help(sport)
     info = {}
     info['тип обьекта'] = type(obj)
-    info['описание класса'] = inspect.getcomments(sport)
-    info['атрибуты'] = vars(boy).keys()
-    info['функции'] = inspect.getmembers(sport, inspect.isfunction)
-    info['модуль'] = obj.__module__
+    info['описание класса'] = inspect.getcomments(obj)
+    info['атрибуты'] = [attr for attr in dir(obj) if not attr.startswith('__')]
+    info['встроенные атрибуты'] = [attr for attr in dir(obj) if attr.startswith('__')]
+    info['функции'] = inspect.getmembers(obj, inspect.isfunction)
+    info['модуль'] = inspect.getmodule(obj)
     info['версия python'] = sys.version
     info['версия os'] = sys.platform
     info['interpretator'] = sys.executable
@@ -51,6 +52,6 @@ class sport(object):
         return cup_
 
 boy = sport(12321, 'Ivanov', 15, )
-a = introspection_info(boy)
+a = introspection_info(32)
 for key in a:
         print(f'{key}: {a[key]}')
