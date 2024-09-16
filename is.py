@@ -2,13 +2,15 @@ import sys, inspect
 
 
 def introspection_info(obj):
-    # help(sport)
     info = {}
     info['тип обьекта'] = type(obj)
-    info['описание класса'] = inspect.getcomments(obj)
-    info['атрибуты'] = inspect.getmembers(obj, lambda attr: not (inspect.isroutine(attr)))
-    info['методы'] = inspect.getmembers(obj, inspect.isroutine)
-    info['функции'] = inspect.getmembers(obj, inspect.isfunction)
+    info['описание класса'] = inspect.getcomments(obj.__class__)
+    if hasattr(obj, '__dict__') == False:
+        info['атрибуты'] = inspect.getmembers(obj.__class__, inspect.isdatadescriptor)
+    else:
+        info['атрибуты'] = vars(obj).keys()
+    info['методы'] = inspect.getmembers(obj.__class__, inspect.ismethod)
+    info['функции'] = inspect.getmembers(obj.__class__, inspect.isfunction)
     info['модуль'] = inspect.getmodule(obj)
     info['версия python'] = sys.version
     info['версия os'] = sys.platform
@@ -18,7 +20,7 @@ def introspection_info(obj):
 
 
 # импровизированный тип данных
-class sport(object):
+class sport():
 
     def __init__(self, id: int, name: str, age: int):
         self.id = id
@@ -52,6 +54,7 @@ class sport(object):
         return cup_
 
 boy = sport(12321, 'Ivanov', 15, )
-a = introspection_info(boy)
+a = introspection_info(6)
+
 for key in a:
         print(f'{key}: {a[key]}')
