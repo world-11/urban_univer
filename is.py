@@ -6,10 +6,15 @@ def introspection_info(obj):
     info['тип обьекта'] = type(obj)
     info['описание класса'] = inspect.getcomments(obj.__class__)
     if hasattr(obj, '__dict__') == False:
-        info['атрибуты'] = inspect.getmembers(obj.__class__, inspect.isdatadescriptor)
+        info['атрибуты'] = [atr for atr in dir(obj.__class__) if not callable(getattr(obj.__class__, atr))
+                            and not atr.startswith('__')]
     else:
         info['атрибуты'] = vars(obj).keys()
-    info['методы'] = inspect.getmembers(obj.__class__, inspect.ismethod)
+    if hasattr(obj, '__dict__') == True:
+        info['методы'] = inspect.getmembers(obj.__class__, inspect.ismethod)
+    else:
+        info['методы'] = [method for method in dir(obj.__class__) if callable(getattr(obj.__class__, method))
+                          and not method.startswith('__')]
     info['функции'] = inspect.getmembers(obj.__class__, inspect.isfunction)
     info['модуль'] = inspect.getmodule(obj)
     info['версия python'] = sys.version
@@ -54,7 +59,7 @@ class sport():
         return cup_
 
 boy = sport(12321, 'Ivanov', 15, )
-a = introspection_info(6)
+a = introspection_info(9)
 
 for key in a:
         print(f'{key}: {a[key]}')
