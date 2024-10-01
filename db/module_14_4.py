@@ -8,7 +8,7 @@ from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 import crud_functions
 
 
-api = "7421858998:AAEUU7QtPDYoXa5mKRX7bXo4vk_vS6Nzjhg"
+api = ""
 bot = Bot(token=api)
 dp = Dispatcher(bot, storage=MemoryStorage())
 button_1 = KeyboardButton(text = 'Рассчитать')
